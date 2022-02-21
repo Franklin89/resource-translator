@@ -1,3 +1,4 @@
+import { info } from '@actions/core';
 import { TranslatableTextMap } from "../abstractions/translatable-text-map";
 import { JsonFile } from "../file-formats/json-file";
 import { TranslationFileParser } from "./translation-file-parser";
@@ -7,10 +8,12 @@ export class JsonParser implements TranslationFileParser {
     static DELIMITER: string = '[--]';
 
     parseFrom(fileContent: string): Promise<JsonFile> {
+        info(`parseFrom`);
         const buildMap = (obj: any, parentPath?: string) => {
             for (const [key, value] of Object.entries(obj)) {
                 const path = parentPath ? `${parentPath}${JsonParser.DELIMITER}${key}` : key;
-                if (typeof value === "string") {
+                info(`${value}`);
+                if (typeof value === "string"/* && (value?.length === 0 || value?.charAt(0) === '#')*/) {
                     map.set(path, value);
                 } else {
                     buildMap(value, path);
@@ -52,9 +55,11 @@ export class JsonParser implements TranslationFileParser {
     }
 
     applyTranslations(instance: JsonFile, translations: { [key: string]: string; } | undefined, targetLocale?: string): JsonFile {
+        info(`applyTranslations`);
         if (instance && translations) {
             for (let key in translations) {
                 const value = translations[key];
+                info(`${value}`);
                 if (value) {
                     instance[key] = value;
                 }
@@ -65,8 +70,10 @@ export class JsonParser implements TranslationFileParser {
     }
 
     toTranslatableTextMap(instance: JsonFile): TranslatableTextMap {
+        info(`toTranslatableTextMap`);
         const textToTranslate: Map<string, string> = new Map();
         for (const [key, value] of Object.entries(instance)) {
+            info(`${key} - ${value}`);
             textToTranslate.set(key, value);
         }
 
