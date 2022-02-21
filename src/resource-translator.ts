@@ -37,7 +37,6 @@ export async function start(inputs: Inputs) {
                     })
                     .sort((a, b) => naturalLanguageCompare(a, b));
             info(`Detected translation targets to: ${toLocales.join(", ")}`);
-            info(`oi`);
 
             const translationFiles = await findAllTranslationFiles(inputs.sourceLocale);
             if (!translationFiles ||
@@ -71,9 +70,6 @@ export async function start(inputs: Inputs) {
                     const fileContent = readFile(filePath);
                     const parsedFile = await translationFileParser.parseFrom(fileContent);
                     const translatableTextMap = translationFileParser.toTranslatableTextMap(parsedFile);
-
-                    info(JSON.stringify(parsedFile));
-                    info(JSON.stringify(translatableTextMap));
 
                     debug(`Translatable text:\n ${JSON.stringify(translatableTextMap, stringifyMap)}`);
 

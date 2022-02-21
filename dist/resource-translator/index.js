@@ -15503,7 +15503,6 @@ async function start(inputs) {
             })
                 .sort((a, b) => utils_1.naturalLanguageCompare(a, b));
             core_1.info(`Detected translation targets to: ${toLocales.join(", ")}`);
-            core_1.info(`oi`);
             const translationFiles = await translation_file_finder_1.findAllTranslationFiles(inputs.sourceLocale);
             if (!translationFiles ||
                 (!translationFiles.po &&
@@ -15531,8 +15530,6 @@ async function start(inputs) {
                     const fileContent = reader_writer_1.readFile(filePath);
                     const parsedFile = await translationFileParser.parseFrom(fileContent);
                     const translatableTextMap = translationFileParser.toTranslatableTextMap(parsedFile);
-                    core_1.info(JSON.stringify(parsedFile));
-                    core_1.info(JSON.stringify(translatableTextMap));
                     core_1.debug(`Translatable text:\n ${JSON.stringify(translatableTextMap, utils_1.stringifyMap)}`);
                     if (translatableTextMap) {
                         const resultSet = await translation_api_1.translate(inputs, toLocales, translatableTextMap.text, filePath);
@@ -15589,7 +15586,7 @@ async function start(inputs) {
     }
     catch (error) {
         console.trace();
-        core_1.setFailed(error === null || error === void 0 ? void 0 : error.message);
+        core_1.setFailed(error.message);
     }
 }
 exports.start = start;
