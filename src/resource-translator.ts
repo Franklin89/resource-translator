@@ -37,6 +37,7 @@ export async function start(inputs: Inputs) {
                     })
                     .sort((a, b) => naturalLanguageCompare(a, b));
             info(`Detected translation targets to: ${toLocales.join(", ")}`);
+            info(`oi`);
 
             const translationFiles = await findAllTranslationFiles(inputs.sourceLocale);
             if (!translationFiles ||
