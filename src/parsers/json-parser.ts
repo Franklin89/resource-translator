@@ -13,7 +13,7 @@ export class JsonParser implements TranslationFileParser {
             for (const [key, value] of Object.entries(obj)) {
                 const path = parentPath ? `${parentPath}${JsonParser.DELIMITER}${key}` : key;
                 info(`${value}`);
-                if (typeof value === "string" && (value?.length === 0 || value?.charAt(0) === '#')) {
+                if (typeof value === "string") {
                     map.set(path, value);
                 } else {
                     buildMap(value, path);
@@ -74,7 +74,9 @@ export class JsonParser implements TranslationFileParser {
         const textToTranslate: Map<string, string> = new Map();
         for (const [key, value] of Object.entries(instance)) {
             info(`${key} - ${value}`);
-            textToTranslate.set(key, value);
+            if (value?.length === 0 || value?.charAt(0) === '#') {
+                textToTranslate.set(key, value);
+            }
         }
 
         return {

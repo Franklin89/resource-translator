@@ -71,6 +71,9 @@ export async function start(inputs: Inputs) {
                     const parsedFile = await translationFileParser.parseFrom(fileContent);
                     const translatableTextMap = translationFileParser.toTranslatableTextMap(parsedFile);
 
+                    info(JSON.stringify(parsedFile));
+                    info(JSON.stringify(translatableTextMap));
+
                     debug(`Translatable text:\n ${JSON.stringify(translatableTextMap, stringifyMap)}`);
 
                     if (translatableTextMap) {
@@ -79,6 +82,8 @@ export async function start(inputs: Inputs) {
                             toLocales,
                             translatableTextMap.text,
                             filePath);
+
+                        info(JSON.stringify(resultSet));
 
                         debug(`Translation result:\n ${JSON.stringify(resultSet)}`);
 
@@ -94,6 +99,8 @@ export async function start(inputs: Inputs) {
                                     const result =
                                         translationFileParser.applyTranslations(
                                             clone, translations, locale);
+
+                                    info(JSON.stringify(result));
 
                                     const translatedFile = translationFileParser.toFileFormatted(result, "");
                                     const newPath = getLocaleName(filePath, locale);
