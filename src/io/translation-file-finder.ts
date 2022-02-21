@@ -82,10 +82,10 @@ async function getFilesToInclude(): Promise<string[]> {
 
             if (response.data) {
                 const files = [
-                    ...new Set(response.data.files.map(file => {
-                        const path = resolve(__dirname, file.filename);
+                    ...new Set(response.data.files ? response.data.files.map(file => {
+                        const path = resolve(__dirname, file.filename || '');
                         return basename(path);
-                    }))
+                    }) : [])
                 ];
 
                 debug(`Files from trigger:\n\t${files.join('\n\t')}`);
