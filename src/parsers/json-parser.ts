@@ -1,3 +1,4 @@
+import { info } from '@actions/core';
 import { TranslatableTextMap } from "../abstractions/translatable-text-map";
 import { JsonFile } from "../file-formats/json-file";
 import { TranslationFileParser } from "./translation-file-parser";
@@ -51,10 +52,13 @@ export class JsonParser implements TranslationFileParser {
         return JSON.stringify(content, null, "\t");
     }
 
-    applyTranslations(instance: JsonFile, translations: { [key: string]: string; } | undefined, targetLocale?: string): JsonFile {
+    applyTranslations(instance: JsonFile, translations: { [key: string]: string; } | undefined, targetLocale?: string, originalInstance?: JsonFile): JsonFile {
         if (instance && translations) {
             for (let key in translations) {
-                const value = translations[key];
+                const value = !originalInstance || !originalInstance[key] || originalInstance[key]?.length === 0 || originalInstance[key]?.charAt(0) === '#' 
+                    ? translations[key] 
+                    : originalInstance[key];
+                
                 if (value) {
                     instance[key] = value;
                 }
