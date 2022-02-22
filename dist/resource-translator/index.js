@@ -7968,9 +7968,12 @@ class ResxParser {
         }
     }
     applyTranslations(resource, translations, targetLocale, originalInstance) {
+        var _a, _b;
         if (resource && translations) {
             for (let key in translations) {
-                const value = translations[key];
+                const value = !originalInstance || !originalInstance[key] || ((_a = originalInstance[key]) === null || _a === void 0 ? void 0 : _a.length) === 0 || ((_b = originalInstance[key]) === null || _b === void 0 ? void 0 : _b.charAt(0)) === '#'
+                    ? translations[key]
+                    : originalInstance[key];
                 if (value) {
                     resource_file_1.traverseResx(resource, key, (data) => data.value = [value]);
                 }

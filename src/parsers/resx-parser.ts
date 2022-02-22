@@ -22,7 +22,10 @@ export class ResxParser implements TranslationFileParser {
         originalInstance?: ResourceFile) {
         if (resource && translations) {
             for (let key in translations) {
-                const value = translations[key];
+                const value = !originalInstance || !originalInstance[key] || originalInstance[key]?.length === 0 || originalInstance[key]?.charAt(0) === '#' 
+                    ? translations[key] 
+                    : originalInstance[key];
+                    
                 if (value) {
                     traverseResx(resource, key, (data: Data)  => data.value = [value]);
                 }
