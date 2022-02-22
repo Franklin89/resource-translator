@@ -15544,8 +15544,11 @@ async function start(inputs) {
                                 const originalTranslationFiles = await translation_file_finder_1.findAllTranslationFiles(locale);
                                 const originalFiles = originalTranslationFiles[kind];
                                 const originalFilePath = originalFiles && originalFiles.length > index ? originalFiles[index] : "";
-                                const originalFileContent = reader_writer_1.readFile(originalFilePath);
-                                const originalParsedFile = await translationFileParser.parseFrom(originalFileContent);
+                                let originalParsedFile = {};
+                                if (originalFilePath !== "") {
+                                    const originalFileContent = reader_writer_1.readFile(originalFilePath);
+                                    originalParsedFile = await translationFileParser.parseFrom(originalFileContent);
+                                }
                                 core_1.info('originalParsedFile: ');
                                 core_1.info(JSON.stringify(originalParsedFile));
                                 if (translations) {

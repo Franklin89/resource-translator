@@ -96,8 +96,11 @@ export async function start(inputs: Inputs) {
                                 const originalTranslationFiles = await findAllTranslationFiles(locale);
                                 const originalFiles = originalTranslationFiles[kind];
                                 const originalFilePath = originalFiles && originalFiles.length > index ? originalFiles[index] : "";
-                                const originalFileContent = readFile(originalFilePath);
-                                const originalParsedFile = await translationFileParser.parseFrom(originalFileContent);
+                                let originalParsedFile = {} as TranslationFile;
+                                if (originalFilePath !== "") {
+                                    const originalFileContent = readFile(originalFilePath);
+                                    originalParsedFile = await translationFileParser.parseFrom(originalFileContent);
+                                }                   
 
                                 info('originalParsedFile: ');
                                 info(JSON.stringify(originalParsedFile));
