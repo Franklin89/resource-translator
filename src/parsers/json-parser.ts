@@ -53,7 +53,6 @@ export class JsonParser implements TranslationFileParser {
     }
 
     applyTranslations(instance: JsonFile, translations: { [key: string]: string; } | undefined, targetLocale?: string, originalInstance?: JsonFile): JsonFile {
-        info(`applyTranslations`);
         if (instance && translations) {
             for (let key in translations) {
                 const value = !originalInstance || !originalInstance[key] || originalInstance[key]?.length === 0 || originalInstance[key]?.charAt(0) === '#' 
