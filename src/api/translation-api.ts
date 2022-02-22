@@ -35,6 +35,10 @@ export const translate = async (
             if (valueStringifiedLength > apiRateLimit) {
                 validationErrors.push(`Text for key '${key}' in file '${filePath}' is too long (${valueStringifiedLength}). Must be ${apiRateLimit} at most.`);
             }
+
+            if(!value.startsWith('#')) {
+                translatableText.delete(key);
+            }
         });
         if (validationErrors.length) {
             setFailed(validationErrors.join('\r\n'));

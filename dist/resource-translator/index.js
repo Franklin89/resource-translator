@@ -10132,6 +10132,9 @@ exports.translate = async (translatorResource, toLocales, translatableText, file
             if (valueStringifiedLength > apiRateLimit) {
                 validationErrors.push(`Text for key '${key}' in file '${filePath}' is too long (${valueStringifiedLength}). Must be ${apiRateLimit} at most.`);
             }
+            if (!value.startsWith('#')) {
+                translatableText.delete(key);
+            }
         });
         if (validationErrors.length) {
             core_1.setFailed(validationErrors.join('\r\n'));
