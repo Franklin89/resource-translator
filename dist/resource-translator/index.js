@@ -7971,9 +7971,10 @@ class ResxParser {
         var _a, _b;
         if (resource && translations) {
             for (let key in translations) {
-                const value = !originalInstance || !originalInstance[key] || ((_a = originalInstance[key]) === null || _a === void 0 ? void 0 : _a.length) === 0 || ((_b = originalInstance[key]) === null || _b === void 0 ? void 0 : _b.charAt(0)) === '#'
+                const originalInstanceValue = resource_file_1.getValue(originalInstance || {}, key);
+                const value = !originalInstanceValue || !originalInstanceValue[0] || ((_a = originalInstanceValue[0]) === null || _a === void 0 ? void 0 : _a.length) === 0 || ((_b = originalInstanceValue[0]) === null || _b === void 0 ? void 0 : _b.charAt(0)) === '#'
                     ? translations[key]
-                    : originalInstance[key];
+                    : originalInstanceValue[0];
                 if (value) {
                     resource_file_1.traverseResx(resource, key, (data) => data.value = [value]);
                 }
@@ -12701,13 +12702,25 @@ exports.getCmdPath = getCmdPath;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.traverseResx = void 0;
+exports.getValue = exports.hasValue = exports.traverseResx = void 0;
 exports.traverseResx = (instance, name, dataAction) => {
     if (instance && instance.root && instance.root.data) {
         const data = instance.root.data.find(d => d.$.name === name);
         if (data) {
             dataAction(data);
         }
+    }
+};
+exports.hasValue = (instance, name, value) => {
+    if (instance && instance.root && instance.root.data) {
+        const data = instance.root.data.find(d => d.$.name === name);
+        return (data === null || data === void 0 ? void 0 : data.value) === [value];
+    }
+};
+exports.getValue = (instance, name) => {
+    if (instance && instance.root && instance.root.data) {
+        const data = instance.root.data.find(d => d.$.name === name);
+        return data === null || data === void 0 ? void 0 : data.value;
     }
 };
 
