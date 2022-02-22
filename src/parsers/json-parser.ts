@@ -59,8 +59,8 @@ export class JsonParser implements TranslationFileParser {
         if (instance && translations) {
             for (let key in translations) {
                 const value = translations[key];
-                info(`${value}`);
-                if (value) {
+                info(`${instance[key]} - ${value}`);
+                if ((instance[key]?.length === 0 || instance[key]?.charAt(0) === '#') && value) {
                     instance[key] = value;
                 }
             }

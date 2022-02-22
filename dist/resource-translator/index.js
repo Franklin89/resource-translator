@@ -2653,12 +2653,13 @@ class JsonParser {
         return JSON.stringify(content, null, "\t");
     }
     applyTranslations(instance, translations, targetLocale) {
+        var _a, _b;
         core_1.info(`applyTranslations`);
         if (instance && translations) {
             for (let key in translations) {
                 const value = translations[key];
-                core_1.info(`${value}`);
-                if (value) {
+                core_1.info(`${instance[key]} - ${value}`);
+                if ((((_a = instance[key]) === null || _a === void 0 ? void 0 : _a.length) === 0 || ((_b = instance[key]) === null || _b === void 0 ? void 0 : _b.charAt(0)) === '#') && value) {
                     instance[key] = value;
                 }
             }
@@ -15546,7 +15547,10 @@ async function start(inputs) {
                                     core_1.info('result: ');
                                     core_1.info(JSON.stringify(result));
                                     const translatedFile = translationFileParser.toFileFormatted(result, "");
+                                    core_1.info('translatedFile: ');
+                                    core_1.info(JSON.stringify(translatedFile));
                                     const newPath = utils_1.getLocaleName(filePath, locale);
+                                    core_1.info(`The newPath: ${newPath}`);
                                     if (translatedFile && newPath) {
                                         core_1.debug(`The newPath: ${newPath}`);
                                         if (fs_1.existsSync(newPath)) {
