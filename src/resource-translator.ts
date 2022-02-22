@@ -80,6 +80,7 @@ export async function start(inputs: Inputs) {
                             translatableTextMap.text,
                             filePath);
 
+                        info('resultSet: ');
                         info(JSON.stringify(resultSet));
 
                         debug(`Translation result:\n ${JSON.stringify(resultSet)}`);
@@ -97,10 +98,14 @@ export async function start(inputs: Inputs) {
                                         translationFileParser.applyTranslations(
                                             clone, translations, locale);
 
+                                    info('result: ');
                                     info(JSON.stringify(result));
 
                                     const translatedFile = translationFileParser.toFileFormatted(result, "");
+                                    info('translatedFile: ');
+                                    info(JSON.stringify(translatedFile));
                                     const newPath = getLocaleName(filePath, locale);
+                                    info(`The newPath: ${newPath}`);
                                     if (translatedFile && newPath) {
                                         debug(`The newPath: ${newPath}`);
                                         

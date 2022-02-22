@@ -74,9 +74,7 @@ export class JsonParser implements TranslationFileParser {
         const textToTranslate: Map<string, string> = new Map();
         for (const [key, value] of Object.entries(instance)) {
             info(`${key} - ${value}`);
-            if (value?.length === 0 || value?.charAt(0) === '#') {
-                textToTranslate.set(key, value);
-            }
+            textToTranslate.set(key, value);
         }
 
         return {

@@ -2670,9 +2670,7 @@ class JsonParser {
         const textToTranslate = new Map();
         for (const [key, value] of Object.entries(instance)) {
             core_1.info(`${key} - ${value}`);
-            if ((value === null || value === void 0 ? void 0 : value.length) === 0 || (value === null || value === void 0 ? void 0 : value.charAt(0)) === '#') {
-                textToTranslate.set(key, value);
-            }
+            textToTranslate.set(key, value);
         }
         return {
             text: textToTranslate
@@ -15533,6 +15531,7 @@ async function start(inputs) {
                     core_1.debug(`Translatable text:\n ${JSON.stringify(translatableTextMap, utils_1.stringifyMap)}`);
                     if (translatableTextMap) {
                         const resultSet = await translation_api_1.translate(inputs, toLocales, translatableTextMap.text, filePath);
+                        core_1.info('resultSet: ');
                         core_1.info(JSON.stringify(resultSet));
                         core_1.debug(`Translation result:\n ${JSON.stringify(resultSet)}`);
                         if (resultSet !== undefined) {
@@ -15544,6 +15543,7 @@ async function start(inputs) {
                                 if (translations) {
                                     const clone = Object.assign({}, parsedFile);
                                     const result = translationFileParser.applyTranslations(clone, translations, locale);
+                                    core_1.info('result: ');
                                     core_1.info(JSON.stringify(result));
                                     const translatedFile = translationFileParser.toFileFormatted(result, "");
                                     const newPath = utils_1.getLocaleName(filePath, locale);
