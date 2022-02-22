@@ -92,11 +92,21 @@ export async function start(inputs: Inputs) {
                             for (let i = 0; i < toLocales.length; ++ i) {
                                 const locale = toLocales[i];
                                 const translations = resultSet[locale];
+
+                                const originalTranslationFiles = await findAllTranslationFiles(locale);
+                                const originalFiles = originalTranslationFiles[kind];
+                                const originalFilePath = originalFiles && originalFiles.length > index ? originalFiles[index] : "";
+                                const originalFileContent = readFile(originalFilePath);
+                                const originalParsedFile = await translationFileParser.parseFrom(originalFileContent);
+
+                                info('originalParsedFile: ');
+                                info(JSON.stringify(originalParsedFile));
+
                                 if (translations) {
                                     const clone = Object.assign({} as TranslationFile, parsedFile);
                                     const result =
                                         translationFileParser.applyTranslations(
-                                            clone, translations, locale);
+                                            clone, translations, locale, originalParsedFile);
 
                                     info('result: ');
                                     info(JSON.stringify(result));

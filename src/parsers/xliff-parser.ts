@@ -19,7 +19,8 @@ export class XliffParser implements TranslationFileParser {
     applyTranslations(
         instance: XliffFile,
         translations: { [key: string]: string; } | undefined,
-        targetLocale?: string): XliffFile {
+        targetLocale?: string,
+        originalInstance?: XliffFile): XliffFile {
         if (instance && translations && targetLocale) {
             instance.xliff.$.trgLang = targetLocale;
             for (let key in translations) {

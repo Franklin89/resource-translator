@@ -915,7 +915,7 @@ class RestextParser {
         }
         return text || defaultValue;
     }
-    applyTranslations(instance, translations, targetLocale) {
+    applyTranslations(instance, translations, targetLocale, originalInstance) {
         if (instance && translations) {
             for (let key in translations) {
                 const value = translations[key];
@@ -1308,7 +1308,7 @@ class PortableObjectParser {
     toFileFormatted(instance, defaultValue) {
         return !!instance ? instance.tokens.map(t => t.line).join('\n') : defaultValue;
     }
-    applyTranslations(portableObject, translations, targetLocale) {
+    applyTranslations(portableObject, translations, targetLocale, originalInstance) {
         if (portableObject && translations) {
             let lastIndex = 0;
             for (let key in translations) {
@@ -2612,11 +2612,9 @@ exports.JsonParser = void 0;
 const core_1 = __webpack_require__(470);
 class JsonParser {
     parseFrom(fileContent) {
-        core_1.info(`parseFrom`);
         const buildMap = (obj, parentPath) => {
             for (const [key, value] of Object.entries(obj)) {
                 const path = parentPath ? `${parentPath}${JsonParser.DELIMITER}${key}` : key;
-                core_1.info(`${value}`);
                 if (typeof value === "string") {
                     map.set(path, value);
                 }
@@ -2652,14 +2650,16 @@ class JsonParser {
         }
         return JSON.stringify(content, null, "\t");
     }
-    applyTranslations(instance, translations, targetLocale) {
+    applyTranslations(instance, translations, targetLocale, originalInstance) {
         var _a, _b;
         core_1.info(`applyTranslations`);
         if (instance && translations) {
             for (let key in translations) {
-                const value = translations[key];
+                const value = !originalInstance || ((_a = originalInstance[key]) === null || _a === void 0 ? void 0 : _a.length) === 0 || ((_b = originalInstance[key]) === null || _b === void 0 ? void 0 : _b.charAt(0)) === '#'
+                    ? translations[key]
+                    : originalInstance[key];
                 core_1.info(`${instance[key]} - ${value}`);
-                if ((((_a = instance[key]) === null || _a === void 0 ? void 0 : _a.length) === 0 || ((_b = instance[key]) === null || _b === void 0 ? void 0 : _b.charAt(0)) === '#') && value) {
+                if (value) {
                     instance[key] = value;
                 }
             }
@@ -7413,7 +7413,7 @@ class XliffParser {
             return defaultValue;
         }
     }
-    applyTranslations(instance, translations, targetLocale) {
+    applyTranslations(instance, translations, targetLocale, originalInstance) {
         if (instance && translations && targetLocale) {
             instance.xliff.$.trgLang = targetLocale;
             for (let key in translations) {
@@ -7972,7 +7972,7 @@ class ResxParser {
             return defaultValue;
         }
     }
-    applyTranslations(resource, translations, targetLocale) {
+    applyTranslations(resource, translations, targetLocale, originalInstance) {
         if (resource && translations) {
             for (let key in translations) {
                 const value = translations[key];
@@ -15541,9 +15541,16 @@ async function start(inputs) {
                             for (let i = 0; i < toLocales.length; ++i) {
                                 const locale = toLocales[i];
                                 const translations = resultSet[locale];
+                                const originalTranslationFiles = await translation_file_finder_1.findAllTranslationFiles(locale);
+                                const originalFiles = originalTranslationFiles[kind];
+                                const originalFilePath = originalFiles && originalFiles.length > index ? originalFiles[index] : "";
+                                const originalFileContent = reader_writer_1.readFile(originalFilePath);
+                                const originalParsedFile = await translationFileParser.parseFrom(originalFileContent);
+                                core_1.info('originalParsedFile: ');
+                                core_1.info(JSON.stringify(originalParsedFile));
                                 if (translations) {
                                     const clone = Object.assign({}, parsedFile);
-                                    const result = translationFileParser.applyTranslations(clone, translations, locale);
+                                    const result = translationFileParser.applyTranslations(clone, translations, locale, originalParsedFile);
                                     core_1.info('result: ');
                                     core_1.info(JSON.stringify(result));
                                     const translatedFile = translationFileParser.toFileFormatted(result, "");

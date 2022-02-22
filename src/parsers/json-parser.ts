@@ -8,11 +8,9 @@ export class JsonParser implements TranslationFileParser {
     static DELIMITER: string = '[--]';
 
     parseFrom(fileContent: string): Promise<JsonFile> {
-        info(`parseFrom`);
         const buildMap = (obj: any, parentPath?: string) => {
             for (const [key, value] of Object.entries(obj)) {
                 const path = parentPath ? `${parentPath}${JsonParser.DELIMITER}${key}` : key;
-                info(`${value}`);
                 if (typeof value === "string") {
                     map.set(path, value);
                 } else {
@@ -54,13 +52,17 @@ export class JsonParser implements TranslationFileParser {
         return JSON.stringify(content, null, "\t");
     }
 
-    applyTranslations(instance: JsonFile, translations: { [key: string]: string; } | undefined, targetLocale?: string): JsonFile {
+    applyTranslations(instance: JsonFile, translations: { [key: string]: string; } | undefined, targetLocale?: string, originalInstance?: JsonFile): JsonFile {
         info(`applyTranslations`);
         if (instance && translations) {
             for (let key in translations) {
-                const value = translations[key];
+                const value = !originalInstance || originalInstance[key]?.length === 0 || originalInstance[key]?.charAt(0) === '#' 
+                    ? translations[key] 
+                    : originalInstance[key];
+
                 info(`${instance[key]} - ${value}`);
-                if ((instance[key]?.length === 0 || instance[key]?.charAt(0) === '#') && value) {
+                
+                if (value) {
                     instance[key] = value;
                 }
             }

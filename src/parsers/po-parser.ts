@@ -24,7 +24,8 @@ export class PortableObjectParser implements TranslationFileParser {
     applyTranslations(
         portableObject: PortableObjectFile,
         translations: { [key: string]: string; } | undefined,
-        targetLocale?: string): PortableObjectFile {
+        targetLocale?: string, 
+        originalInstance?: PortableObjectFile): PortableObjectFile {
         if (portableObject && translations) {
             let lastIndex = 0;
             for (let key in translations) {

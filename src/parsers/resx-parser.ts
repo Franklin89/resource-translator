@@ -18,7 +18,8 @@ export class ResxParser implements TranslationFileParser {
     applyTranslations(
         resource: ResourceFile,
         translations: { [key: string]: string } | undefined,
-        targetLocale?: string) {
+        targetLocale?: string,
+        originalInstance?: ResourceFile) {
         if (resource && translations) {
             for (let key in translations) {
                 const value = translations[key];

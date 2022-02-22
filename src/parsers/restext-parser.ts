@@ -58,7 +58,8 @@ export class RestextParser implements TranslationFileParser {
     applyTranslations(
         instance: RestextFile,
         translations: { [key: string]: string; } | undefined,
-        targetLocale?: string): RestextFile {
+        targetLocale?: string,
+        originalInstance?: RestextFile): RestextFile {
         if (instance && translations) {
             for (let key in translations) {
                 const value = translations[key];
