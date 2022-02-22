@@ -56,7 +56,7 @@ export class JsonParser implements TranslationFileParser {
         info(`applyTranslations`);
         if (instance && translations) {
             for (let key in translations) {
-                const value = !originalInstance || originalInstance[key]?.length === 0 || originalInstance[key]?.charAt(0) === '#' 
+                const value = !originalInstance || !originalInstance[key] || originalInstance[key]?.length === 0 || originalInstance[key]?.charAt(0) === '#' 
                     ? translations[key] 
                     : originalInstance[key];
 

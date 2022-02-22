@@ -2655,7 +2655,7 @@ class JsonParser {
         core_1.info(`applyTranslations`);
         if (instance && translations) {
             for (let key in translations) {
-                const value = !originalInstance || ((_a = originalInstance[key]) === null || _a === void 0 ? void 0 : _a.length) === 0 || ((_b = originalInstance[key]) === null || _b === void 0 ? void 0 : _b.charAt(0)) === '#'
+                const value = !originalInstance || !originalInstance[key] || ((_a = originalInstance[key]) === null || _a === void 0 ? void 0 : _a.length) === 0 || ((_b = originalInstance[key]) === null || _b === void 0 ? void 0 : _b.charAt(0)) === '#'
                     ? translations[key]
                     : originalInstance[key];
                 core_1.info(`${instance[key]} - ${value}`);
