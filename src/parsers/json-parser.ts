@@ -59,8 +59,6 @@ export class JsonParser implements TranslationFileParser {
                 const value = !originalInstance || !originalInstance[key] || originalInstance[key]?.length === 0 || originalInstance[key]?.charAt(0) === '#' 
                     ? translations[key] 
                     : originalInstance[key];
-
-                info(`${instance[key]} - ${value}`);
                 
                 if (value) {
                     instance[key] = value;
@@ -72,10 +70,8 @@ export class JsonParser implements TranslationFileParser {
     }
 
     toTranslatableTextMap(instance: JsonFile): TranslatableTextMap {
-        info(`toTranslatableTextMap`);
         const textToTranslate: Map<string, string> = new Map();
         for (const [key, value] of Object.entries(instance)) {
-            info(`${key} - ${value}`);
             textToTranslate.set(key, value);
         }
 

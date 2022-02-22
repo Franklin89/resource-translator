@@ -2658,7 +2658,6 @@ class JsonParser {
                 const value = !originalInstance || !originalInstance[key] || ((_a = originalInstance[key]) === null || _a === void 0 ? void 0 : _a.length) === 0 || ((_b = originalInstance[key]) === null || _b === void 0 ? void 0 : _b.charAt(0)) === '#'
                     ? translations[key]
                     : originalInstance[key];
-                core_1.info(`${instance[key]} - ${value}`);
                 if (value) {
                     instance[key] = value;
                 }
@@ -2667,10 +2666,8 @@ class JsonParser {
         return instance;
     }
     toTranslatableTextMap(instance) {
-        core_1.info(`toTranslatableTextMap`);
         const textToTranslate = new Map();
         for (const [key, value] of Object.entries(instance)) {
-            core_1.info(`${key} - ${value}`);
             textToTranslate.set(key, value);
         }
         return {
@@ -15532,8 +15529,6 @@ async function start(inputs) {
                     core_1.debug(`Translatable text:\n ${JSON.stringify(translatableTextMap, utils_1.stringifyMap)}`);
                     if (translatableTextMap) {
                         const resultSet = await translation_api_1.translate(inputs, toLocales, translatableTextMap.text, filePath);
-                        core_1.info('resultSet: ');
-                        core_1.info(JSON.stringify(resultSet));
                         core_1.debug(`Translation result:\n ${JSON.stringify(resultSet)}`);
                         if (resultSet !== undefined) {
                             const length = translatableTextMap.text.size;
@@ -15549,18 +15544,11 @@ async function start(inputs) {
                                     const originalFileContent = reader_writer_1.readFile(originalFilePath);
                                     originalParsedFile = await translationFileParser.parseFrom(originalFileContent);
                                 }
-                                core_1.info('originalParsedFile: ');
-                                core_1.info(JSON.stringify(originalParsedFile));
                                 if (translations) {
                                     const clone = Object.assign({}, parsedFile);
                                     const result = translationFileParser.applyTranslations(clone, translations, locale, originalParsedFile);
-                                    core_1.info('result: ');
-                                    core_1.info(JSON.stringify(result));
                                     const translatedFile = translationFileParser.toFileFormatted(result, "");
-                                    core_1.info('translatedFile: ');
-                                    core_1.info(JSON.stringify(translatedFile));
                                     const newPath = utils_1.getLocaleName(filePath, locale);
-                                    core_1.info(`The newPath: ${newPath}`);
                                     if (translatedFile && newPath) {
                                         core_1.debug(`The newPath: ${newPath}`);
                                         if (fs_1.existsSync(newPath)) {

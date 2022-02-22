@@ -80,9 +80,6 @@ export async function start(inputs: Inputs) {
                             translatableTextMap.text,
                             filePath);
 
-                        info('resultSet: ');
-                        info(JSON.stringify(resultSet));
-
                         debug(`Translation result:\n ${JSON.stringify(resultSet)}`);
 
                         if (resultSet !== undefined) {
@@ -100,10 +97,7 @@ export async function start(inputs: Inputs) {
                                 if (originalFilePath !== "") {
                                     const originalFileContent = readFile(originalFilePath);
                                     originalParsedFile = await translationFileParser.parseFrom(originalFileContent);
-                                }                   
-
-                                info('originalParsedFile: ');
-                                info(JSON.stringify(originalParsedFile));
+                                }
 
                                 if (translations) {
                                     const clone = Object.assign({} as TranslationFile, parsedFile);
@@ -111,14 +105,8 @@ export async function start(inputs: Inputs) {
                                         translationFileParser.applyTranslations(
                                             clone, translations, locale, originalParsedFile);
 
-                                    info('result: ');
-                                    info(JSON.stringify(result));
-
                                     const translatedFile = translationFileParser.toFileFormatted(result, "");
-                                    info('translatedFile: ');
-                                    info(JSON.stringify(translatedFile));
                                     const newPath = getLocaleName(filePath, locale);
-                                    info(`The newPath: ${newPath}`);
                                     if (translatedFile && newPath) {
                                         debug(`The newPath: ${newPath}`);
                                         
