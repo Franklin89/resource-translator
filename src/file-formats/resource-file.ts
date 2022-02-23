@@ -25,3 +25,12 @@ export const traverseResx =
             }
         }
 };
+
+export const getValue =
+    (instance: ResourceFile, name: string) => {
+        if (instance && instance.root && instance.root.data) {
+            const data =
+                instance.root.data.find(d => d.$.name === name);
+            return data?.value;
+        }
+};
